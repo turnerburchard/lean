@@ -32,10 +32,11 @@ def K : α → β → α :=
   fun a b ↦ a
 
 def C : (α → β → γ) → β → α → γ :=
-  sorry
+  fun a _ ↦ γ
 
 def projFst : α → α → α :=
-  sorry
+  fun a ↦ α
+  fun b ↦ α
 
 /- Give a different answer than for `projFst`. -/
 
