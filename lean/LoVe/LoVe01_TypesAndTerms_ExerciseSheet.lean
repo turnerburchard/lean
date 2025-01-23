@@ -43,7 +43,7 @@ def projFst : α → α → α :=
 def projSnd : α → α → α :=
   fun a b ↦ b
 
-  def someNonsense : (α → β → γ) → α → (α → γ) → β → γ :=
+def someNonsense : (α → β → γ) → α → (α → γ) → β → γ :=
   fun abg ↦ fun a ↦ fun ag ↦ fun b ↦ abg a b
 
 
@@ -56,12 +56,11 @@ bars) and `⊢` useful. -/
 -- write your solution in a comment here or on paper
 
 /-
-
-
-
+b : 
+----------------------------------------
+f : a → b → γ , a : α , b : β ⊢ f a b : γ
 ------------------------
-(α → β → γ) → β → α → γ
-
+fun a ↦ f a b : α → γ
 
 -/
 
