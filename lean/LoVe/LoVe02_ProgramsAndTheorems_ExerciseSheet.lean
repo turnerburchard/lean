@@ -128,6 +128,17 @@ second property as generally as possible, for arbitrary types. -/
 
 -- enter your theorem statements here
 
-theorem map1 ()
+theorem map_identity {α  : Type} (xs: List α ) :
+  map (fun x ↦ x) xs = xs :=
+  sorry
+
+
+theorem map_nested {α β γ : Type} (f: α → β) (g: β  → γ)(xs: List α )  :
+  map (fun x ↦ g (f x)) xs = map g (map f xs) :=
+  sorry
+
+
+  -- do i need anything else?
+
 
 end LoVe
