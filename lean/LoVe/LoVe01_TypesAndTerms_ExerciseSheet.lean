@@ -29,13 +29,13 @@ def I : α → α :=
   fun a ↦ a
 
 def K : α → β → α :=
-  fun a b ↦ a
+  fun a _ ↦ a
 
 def C : (α → β → γ) → β → α → γ :=
   fun f ↦ fun b ↦ fun a ↦ f a b
 
 def projFst : α → α → α :=
-  fun a ↦ fun b ↦ a
+  fun a ↦ fun _ ↦ a
 
 
 /- Give a different answer than for `projFst`. -/
@@ -56,7 +56,8 @@ bars) and `⊢` useful. -/
 -- write your solution in a comment here or on paper
 
 /-
-b : 
+
+b :
 ----------------------------------------
 f : a → b → γ , a : α , b : β ⊢ f a b : γ
 ------------------------

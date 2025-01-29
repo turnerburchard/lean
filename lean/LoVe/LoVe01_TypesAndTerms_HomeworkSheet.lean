@@ -38,16 +38,22 @@ constructing a term. By hovering over `_`, you will see the current logical
 context. -/
 
 def B : (α → β) → (γ → α) → γ → β :=
-  sorry
+  fun f₁ f₂ c ↦ f₁ (f₂ c)
+  -- compute f2(c) first and apply result as input to f1
 
 def S : (α → β → γ) → (α → β) → α → γ :=
-  sorry
+  fun f₁ f₂ a ↦ f₁ a (f₂ a)
+
+  -- f1(a) becomes β → γ so we need a β as an input which we get from (f₂ a)
 
 def moreNonsense : ((α → β) → γ → δ) → γ → β → δ :=
-  sorry
+  fun f₁ c b ↦ f₁ (fun _ ↦ b) c
+  -- little more confusing with placeholder
+  -- create anonymous function which ignores input and returns b
 
 def evenMoreNonsense : (α → β) → (α → γ) → α → β → γ :=
-  sorry
+  fun _ f₂ a _ ↦ f₂ a
+  -- easy!
 
 /- 1.2 (2 points). Complete the following definition.
 
@@ -57,7 +63,8 @@ follow the procedure described in the Hitchhiker's Guide.
 Note: Peirce is pronounced like the English word "purse". -/
 
 def weakPeirce : ((((α → β) → α) → α) → β) → β :=
-  sorry
+  fun f₁ ↦ f₁ fun _ ↦ (fun _ ↦ (fun _ ↦ _))
+  -- this one is crazy i don't understand it
 
 /- ## Question 2 (4 points): Typing Derivation
 
