@@ -26,35 +26,59 @@ Section 3.3 in the Hitchhiker's Guide. -/
 
 theorem I (a : Prop) :
   a → a :=
-  sorry
+  by
+    intro ha -- hypothesize a is true
+    exact ha
+
 
 theorem K (a b : Prop) :
   a → b → b :=
-  sorry
+  by
+    intro ha
+    intro hb
+    exact hb
+
 
 theorem C (a b c : Prop) :
   (a → b → c) → b → a → c :=
-  sorry
+  by
+    intro habc hb ha
+    apply habc
+    apply ha
+    apply hb
 
 theorem proj_fst (a : Prop) :
   a → a → a :=
-  sorry
+  -- "given two proofs of a return one"
+  by
+    intro haa ha
+    exact ha -- could be haa or ha here - return either argument works
 
 /- Please give a different answer than for `proj_fst`: -/
 
 theorem proj_snd (a : Prop) :
   a → a → a :=
-  sorry
+  by
+    intro haa ha
+    exact haa
 
 theorem some_nonsense (a b c : Prop) :
   (a → b → c) → a → (a → c) → b → c :=
-  sorry
+  by
+    intro habc ha hac hb
+    apply habc
+    apply ha
+    apply hb
 
 /- 1.2. Prove the contraposition rule using basic tactics. -/
 
 theorem contrapositive (a b : Prop) :
   (a → b) → ¬ b → ¬ a :=
-  sorry
+  -- (a → b) → (b → False) → (a → False)
+  -- equivalently, given a prove False
+  by
+    intro hab hnb ha
+    exact hnb (hab ha)
 
 /- 1.3. Prove the distributivity of `∀` over `∧` using basic tactics.
 
@@ -64,8 +88,33 @@ be necessary. -/
 
 theorem forall_and {α : Type} (p q : α → Prop) :
   (∀x, p x ∧ q x) ↔ (∀x, p x) ∧ (∀x, q x) :=
-  sorry
+by
+  constructor
+  {
+    intro h
+    constructor
+    {
+      intro x
+      exact (h x).left
+    }
+    {
+      intro x
+      exact (h x).right
+    }
+  }
+  {
+    intro h
+    intro x
+    constructor
+    {
+      exact h.left x
+    }
+    {
+      exact h.right x
+    }
+  }
 
+-- aahhhhhh
 
 /- ## Question 2: Natural Numbers
 
@@ -76,7 +125,8 @@ theorem forall_and {α : Type} (p q : α → Prop) :
 
 theorem mul_zero (n : ℕ) :
   mul 0 n = 0 :=
-  sorry
+  by
+
 
 #check add_succ
 theorem mul_succ (m n : ℕ) :
