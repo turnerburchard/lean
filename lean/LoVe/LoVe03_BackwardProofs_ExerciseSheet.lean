@@ -11,6 +11,7 @@ Replace the placeholders (e.g., `:= sorry`) with your solutions. -/
 
 set_option autoImplicit false
 set_option tactic.hygienic false
+set_option trace.simplify true
 
 namespace LoVe
 
@@ -123,22 +124,60 @@ by
 
 #check mul
 
+
 theorem mul_zero (n : ℕ) :
   mul 0 n = 0 :=
   by
+    induction n with
+    | zero => rfl
+    | succ n' ih =>
+      unfold mul
+      rw [ih]
+      rfl
 
 
 #check add_succ
 theorem mul_succ (m n : ℕ) :
-  mul (Nat.succ m) n = add (mul m n) n :=
-  sorry
+  Nat.mul (Nat.succ m) n = Nat.add (Nat.mul m n) n :=
+  -- (m+1) * n = (m*n) + n
+  by
+    induction m with
+      | zero => simp[add, add_succ]
+
+
+      -- (0 + 1) * n = n + (0 * n)
+      | succ m' ih =>
+      -- assume (m+1) * n = (m*n) + n
+      -- prove (m + 1 + 1) * n = ((m + 1) * n) + n
+
+        simp [mul, ih]
+        -- (m + 2) * n= mn + 2n
+
+
+
+
+
+  -- super stuck here!!!
+
+
 
 /- 2.2. Prove commutativity and associativity of multiplication using the
 `induction` tactic. Choose the induction variable carefully. -/
 
+#check zero_mul
+#check mul_zero
+
+
 theorem mul_comm (m n : ℕ) :
   mul m n = mul n m :=
-  sorry
+  by
+    induction m with
+      | zero =>
+        rw [mul_zero]
+        rfl
+
+      | succ m' ih =>
+        sorry
 
 theorem mul_assoc (l m n : ℕ) :
   mul (mul l m) n = mul l (mul m n) :=
