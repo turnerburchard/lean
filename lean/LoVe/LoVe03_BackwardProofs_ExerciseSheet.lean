@@ -11,7 +11,6 @@ Replace the placeholders (e.g., `:= sorry`) with your solutions. -/
 
 set_option autoImplicit false
 set_option tactic.hygienic false
-set_option trace.simplify true
 
 namespace LoVe
 
@@ -78,8 +77,8 @@ theorem contrapositive (a b : Prop) :
   -- (a → b) → (b → False) → (a → False)
   -- equivalently, given a prove False
   by
-    intro hab hnb ha
-    exact hnb (hab ha)
+    intro ab nb a
+    exact nb (ab a)
 
 /- 1.3. Prove the distributivity of `∀` over `∧` using basic tactics.
 
@@ -131,34 +130,23 @@ theorem mul_zero (n : ℕ) :
     induction n with
     | zero => rfl
     | succ n' ih =>
-      unfold mul
+      rw [mul]
       rw [ih]
-      rfl
+      rw [add]
 
+--set_option pp.notation true
 
 #check add_succ
 theorem mul_succ (m n : ℕ) :
   Nat.mul (Nat.succ m) n = Nat.add (Nat.mul m n) n :=
   -- (m+1) * n = (m*n) + n
   by
-    induction m with
-      | zero => simp[add, add_succ]
-
-
-      -- (0 + 1) * n = n + (0 * n)
-      | succ m' ih =>
-      -- assume (m+1) * n = (m*n) + n
-      -- prove (m + 1 + 1) * n = ((m + 1) * n) + n
-
+    induction n with
+      | zero => rfl
+      | succ n ih =>
         simp [mul, ih]
-        -- (m + 2) * n= mn + 2n
-
-
-
-
-
-  -- super stuck here!!!
-
+        rewrite [Nat.succ_mul]
+        rfl
 
 
 /- 2.2. Prove commutativity and associativity of multiplication using the
@@ -169,15 +157,22 @@ theorem mul_succ (m n : ℕ) :
 
 
 theorem mul_comm (m n : ℕ) :
-  mul m n = mul n m :=
+  Nat.mul m n = Nat.mul n m :=
   by
-    induction m with
+    induction n with
       | zero =>
-        rw [mul_zero]
-        rfl
-
-      | succ m' ih =>
+        --rw [Nat.zero]
+        --rw [mul_zero]
+        --rfl
         sorry
+
+      | succ n ih =>
+        rw [mul_succ]
+        rw [Nat.mul]
+        rw [ih]
+
+
+
 
 theorem mul_assoc (l m n : ℕ) :
   mul (mul l m) n = mul l (mul m n) :=

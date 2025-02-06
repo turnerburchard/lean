@@ -40,7 +40,27 @@ Hint: There is an easy way. -/
 
 theorem about_Impl_term :
   ∀a b : Prop, ¬ a ∨ b → a → b :=
-  sorry
+    assume a: Prop
+    assume b: Prop
+    assume hnaob: ¬ a ∨ b
+    -- why can't we assume ha within the Or.elim?
+    assume ha: a
+    show b from Or.elim hnaob
+      -- given hna, b
+      (
+      assume hna: ¬ a
+
+      False.elim (hna ha)
+       -- i don't understand how proving false proves b
+       -- Ex falso quodlibet
+      )
+      -- given b, b
+      (
+        assume hb: b
+        hb
+      )
+
+
 
 /- 1.2 (2 points). Prove the same theorem again, this time by providing a
 structured proof, with `fix`, `assume`, and `show`. -/

@@ -19,41 +19,87 @@ namespace LoVe
 
 theorem I (a : Prop) :
   a → a :=
-  sorry
+  assume ha: a
+  ha
 
 theorem K (a b : Prop) :
   a → b → b :=
-  sorry
+  assume ha: a
+  assume hb: b
+  hb
 
 theorem C (a b c : Prop) :
   (a → b → c) → b → a → c :=
-  sorry
+  assume habc: a → b → c
+  assume hb: b
+  assume ha: a
+  habc ha hb
 
 theorem proj_fst (a : Prop) :
   a → a → a :=
-  sorry
+  assume haa : a
+  assume ha : a
+  haa
 
 /- Please give a different answer than for `proj_fst`. -/
 
 theorem proj_snd (a : Prop) :
   a → a → a :=
-  sorry
+  assume haa: a
+  assume ha : a
+  ha
 
 theorem some_nonsense (a b c : Prop) :
   (a → b → c) → a → (a → c) → b → c :=
-  sorry
+  assume habc: a → b → c
+  assume ha: a
+  assume ac: (a → c)
+  assume b: b
+  habc ha b
 
 /- 1.2. Supply a structured proof of the contraposition rule. -/
 
 theorem contrapositive (a b : Prop) :
   (a → b) → ¬ b → ¬ a :=
-  sorry
+  assume hab: a → b
+  assume hnb: ¬ b
+  assume ha: a
+  -- function to take in an a and return a false
+  hnb (hab ha)
+
 
 /- 1.3. Supply a structured proof of the distributivity of `∀` over `∧`. -/
 
 theorem forall_and {α : Type} (p q : α → Prop) :
   (∀x, p x ∧ q x) ↔ (∀x, p x) ∧ (∀x, q x) :=
-  sorry
+  -- left to right
+  Iff.intro
+  (assume pnq: ∀x, p x ∧ q x
+    have hp: ∀ x, p x :=
+      assume x: α
+      have pxqx: p x ∧ q x := pnq x
+      show p x from And.left pxqx
+    have hq: ∀ x, q x :=
+      assume x: α
+      have pxqx: p x ∧ q x := pnq x
+      show q x from And.right pxqx
+    show (∀x, p x) ∧ (∀x, q x) from
+      And.intro hp hq)
+
+  -- right to left
+  (assume xpxq: (∀x, p x) ∧ (∀x, q x)
+    have hxp: ∀x, p x := And.left xpxq
+    have hxq: ∀x, q x := And.right xpxq
+    have hpq: ∀x, p x ∧ q x :=
+      assume x: α
+      have hp: p x := hxp x
+      have hq: q x := hxq x
+      show p x ∧ q x
+        from And.intro hp hq
+    show ∀x, p x ∧ q x from
+      hpq)
+
+
 
 /- 1.4 (**optional**). Supply a structured proof of the following property,
 which can be used to pull a `∀` quantifier past an `∃` quantifier. -/
