@@ -76,11 +76,11 @@ theorem forall_and {α : Type} (p q : α → Prop) :
   Iff.intro
   (assume pnq: ∀x, p x ∧ q x
     have hp: ∀ x, p x :=
-      assume x: α
+      fix x: α
       have pxqx: p x ∧ q x := pnq x
       show p x from And.left pxqx
     have hq: ∀ x, q x :=
-      assume x: α
+      fix x: α
       have pxqx: p x ∧ q x := pnq x
       show q x from And.right pxqx
     show (∀x, p x) ∧ (∀x, q x) from
@@ -91,7 +91,7 @@ theorem forall_and {α : Type} (p q : α → Prop) :
     have hxp: ∀x, p x := And.left xpxq
     have hxq: ∀x, q x := And.right xpxq
     have hpq: ∀x, p x ∧ q x :=
-      assume x: α
+      fix x: α
       have hp: p x := hxp x
       have hq: q x := hxq x
       show p x ∧ q x
@@ -106,7 +106,17 @@ which can be used to pull a `∀` quantifier past an `∃` quantifier. -/
 
 theorem forall_exists_of_exists_forall {α : Type} (p : α → α → Prop) :
   (∃x, ∀y, p x y) → (∀y, ∃x, p x y) :=
-  sorry
+    assume f: ∃ x, ∀y, p x y
+    fix y: α
+    have h: ∃ x, p x y :=
+      Exists.elim f (
+        fix x: α
+        assume hx : ∀ y, p x y
+        show ∃ x, p x y from
+          Exists.intro x (hx y)
+      )
+      show ∃ x, p x y from h
+
 
 
 /- ## Question 2: Chain of Equalities
@@ -125,7 +135,10 @@ Hint: This is a difficult question. You might need the tactics `simp` and
 
 theorem binomial_square (a b : ℕ) :
   (a + b) * (a + b) = a * a + 2 * a * b + b * b :=
-  sorry
+  by
+    simp
+
+
 
 /- 2.2 (**optional**). Prove the same argument again, this time as a structured
 proof, with `have` steps corresponding to the `calc` equations. Try to reuse as
