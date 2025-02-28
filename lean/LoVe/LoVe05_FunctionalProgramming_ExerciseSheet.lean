@@ -26,28 +26,37 @@ def reverseAccu {α : Type} : List α → List α → List α
   | as, []      => as
   | as, x :: xs => reverseAccu (x :: as) xs
 
+
 /- 1.1. Our intention is that `reverseAccu [] xs` should be equal to
 `reverse xs`. But if we start an induction, we quickly see that the induction
 hypothesis is not strong enough. Start by proving the following generalization
 (using the `induction` tactic or pattern matching): -/
 
 theorem reverseAccu_Eq_reverse_append {α : Type} :
-  ∀as xs : List α, reverseAccu as xs = reverse xs ++ as :=
-  sorry
+  ∀as xs : List α, reverseAccu as xs = reverse xs ++ as
+    | as, [] => by rfl
+    | as, x :: xs =>
+      by
+        simp [reverse, reverseAccu, reverseAccu_Eq_reverse_append]
 
 /- 1.2. Derive the desired equation. -/
 
 theorem reverseAccu_eq_reverse {α : Type} (xs : List α) :
   reverseAccu [] xs = reverse xs :=
-  sorry
+  by
+    simp [reverseAccu_Eq_reverse_append]
 
 /- 1.3. Prove the following property.
 
 Hint: A one-line inductionless proof is possible. -/
 
+#check reverse_reverse
+
 theorem reverseAccu_reverseAccu {α : Type} (xs : List α) :
   reverseAccu [] (reverseAccu [] xs) = xs :=
-  sorry
+  by
+    simp [reverseAccu_eq_reverse]
+    simp [reverse_reverse]
 
 /- 1.4. Prove the following theorem by structural induction, as a "paper"
 proof. This is a good exercise to develop a deeper understanding of how
@@ -106,8 +115,9 @@ Notice that they are registered as simplification rules thanks to the `@[simp]`
 attribute. -/
 
 @[simp] theorem drop_nil {α : Type} :
-  ∀n : ℕ, drop n ([] : List α) = [] :=
-  sorry
+  ∀n : ℕ, drop n ([] : List α) = []
+    | 0 => by rfl
+    | n+1 => by rfl
 
 @[simp] theorem take_nil {α : Type} :
   ∀n : ℕ, take n ([] : List α) = [] :=
@@ -123,6 +133,7 @@ two arguments to `drop`). For the third case, `← add_assoc` might be useful. -
 theorem drop_drop {α : Type} :
   ∀(m n : ℕ) (xs : List α), drop n (drop m xs) = drop (n + m) xs
   | 0,     n, xs      => by rfl
+  | 1,
   -- supply the two missing cases here
 
 theorem take_take {α : Type} :

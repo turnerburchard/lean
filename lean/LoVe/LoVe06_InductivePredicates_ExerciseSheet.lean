@@ -33,11 +33,29 @@ Hint: `cases` or `induction` is useful to reason about hypotheses of the form
 
 @[simp] theorem Odd_1 :
   Odd 1 :=
-  sorry
+  by
+    intro h
+    cases h
+
+-- ha!
 
 /- 1.2. Prove that 3 and 5 are odd. -/
 
--- enter your answer here
+theorem Odd_3 :
+  Odd 3 :=
+  by
+    intro h
+    cases h with
+     | add_two k hk => apply Odd_1 hk
+
+
+theorem Odd_5 :
+  Odd 5 :=
+    by
+      intro h
+      cases h with
+      | add_two k hk => apply Odd_3 hk
+
 
 /- 1.3. Complete the following proof by structural induction. -/
 
@@ -45,7 +63,10 @@ theorem Even_two_times :
   ∀m : ℕ, Even (2 * m)
   | 0     => Even.zero
   | m + 1 =>
-    sorry
+    by
+      simp [Nat.mul_succ]
+      apply Even.add_two
+      apply Even_two_times
 
 
 /- ## Question 2: Tennis Games

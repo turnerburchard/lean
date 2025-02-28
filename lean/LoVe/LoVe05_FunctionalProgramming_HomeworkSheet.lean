@@ -33,16 +33,18 @@ numeric weight, a left subtree, and a right subtree.
 tree over some type variable `α` and that returns the weight component of the
 root node of the tree: -/
 
-def weight {α : Type} : HTree α → ℕ :=
-  sorry
+def weight {α : Type} : HTree α → ℕ
+  | HTree.leaf w a => w
+  | HTree.inner w a₁ a₂ => w
 
 /- 1.2 (1 point). Define a polymorphic Lean function called `unite` that takes
 two trees `l, r : HTree α` and that returns a new tree such that (1) its left
 child is `l`; (2) its right child is `r`; and (3) its weight is the sum of the
 weights of `l` and `r`. -/
 
-def unite {α : Type} : HTree α → HTree α → HTree α :=
-  sorry
+def unite {α : Type} : HTree α → HTree α → HTree α
+  | HTree.leaf w a => unite Htree.leaf a
+  | HTree.inner w a₁ a₂ => unite weight a₁ a₂
 
 /- 1.3 (2 points). Consider the following `insort` function, which inserts a
 tree `u` in a list of trees that is sorted by increasing weight and which
@@ -57,7 +59,13 @@ def insort {α : Type} (u : HTree α) : List (HTree α) → List (HTree α)
 
 theorem insort_Neq_nil {α : Type} (t : HTree α) :
   ∀ts : List (HTree α), insort t ts ≠ [] :=
-  sorry
+  by
+  intro ts
+  match ts with
+    | [] =>  simp[insort]
+    | t :: ts =>
+      if weight u ≤ weight t then u :: t :: ts else t :: insort u ts
+
 
 /- 1.4 (2 points). Prove the same property as above again, this time as a
 "paper" proof. Follow the guidelines given in question 1.4 of the exercise. -/

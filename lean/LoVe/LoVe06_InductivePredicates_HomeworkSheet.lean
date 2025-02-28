@@ -30,6 +30,7 @@ inductive Term : Type
 its argument is of the form `Term.lam …` and that returns `False` otherwise. -/
 
 -- enter your definition here
+inductive IsLam : Term → Prop
 
 /- 1.2 (2 points). Validate your answer to question 1.1 by proving the following
 theorems: -/
