@@ -37,13 +37,41 @@ theorem List.length_add :
   ∀xs ys, List.length xs = List.length ys →
     List.length (List.add xs ys) = List.length xs
   | [], [] =>
-    sorry
+    by
+      rw [List.add]
+      rw [List.length]
+      intro h
+      exact h
+
   | x :: xs, y :: ys =>
-    sorry
+    by
+      rw [List.add]
+      rw [List.length]
+      have ih := List.length_add xs ys
+      have h_length_eq : List.length xs = ys := by
+        apply List.length_cons_inj h
+      specialize ih h_length_eq
+      rw [ih]
+      rfl
+
   | [], y :: ys =>
-    sorry
+    by
+      intro h
+      have h_contradiction : 0 = List.length (y::ys) :=
+        by
+          rw [List.length]
+          contradiction
+      contradiction
+
   | x :: xs, [] =>
-    sorry
+        by
+      intro h
+      have h_contradiction : 0 = List.length (x::xs) :=
+        by
+          rw [List.length]
+          contradiction
+      contradiction
+
 
 /- 1.2. Define componentwise addition on vectors using `List.add` and
 `List.length_add`. -/

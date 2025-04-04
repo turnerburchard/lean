@@ -117,9 +117,12 @@ theorems (e.g., `IsFull_mirror`, `mirror_mirror`). -/
 #check IsFull_mirror
 #check mirror_mirror
 
-theorem mirror_IsFull {α : Type} :
-  ∀t : Tree α, IsFull (mirror t) → IsFull t :=
-  sorry
+theorem mirror_IsFull {α : Type} (t : Tree α) :
+  IsFull (mirror t) → IsFull t :=
+  assume h
+    by rw [mirror_mirror]
+    exact IsFull_mirror (mirror t) h
+
 
 /- 3.2. Define a `map` function on binary trees, similar to `List.map`. -/
 

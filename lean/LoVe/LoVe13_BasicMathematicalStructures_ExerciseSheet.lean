@@ -35,12 +35,26 @@ def Tree.graft {α : Type} : Tree α → Tree α → Tree α
 /- 1.1. Prove the following two theorems by structural induction on `t`. -/
 
 theorem Tree.graft_assoc {α : Type} (t u v : Tree α) :
-  Tree.graft (Tree.graft t u) v = Tree.graft t (Tree.graft u v) :=
-  sorry
+  Tree.graft (Tree.graft t u) v = Tree.graft t (Tree.graft u v) := by
+  induction t with
+  | nil =>
+    simp [Tree.graft]
+  | node a l r ih_l ih_r =>
+    simp [Tree.graft]
+    constructor
+    · exact ih_l
+    · exact ih_r
 
 theorem Tree.graft_nil {α : Type} (t : Tree α) :
-  Tree.graft t Tree.nil = t :=
-  sorry
+  Tree.graft t Tree.nil = t := by
+  induction t with
+  | nil =>
+    simp [Tree.graft]
+  | node a l r ih_l ih_r =>
+    simp [Tree.graft]
+    constructor
+    · exact ih_l
+    · exact ih_r
 
 /- 1.2. Declare `Tree` an instance of `AddMonoid` using `graft` as the
 addition operator. -/
@@ -48,17 +62,18 @@ addition operator. -/
 #print AddMonoid
 
 instance Tree.AddMonoid {α : Type} : AddMonoid (Tree α) :=
-  { add       :=
-      sorry
-    add_assoc :=
-      sorry
-    zero      :=
-      sorry
-    add_zero  :=
-      sorry
-    zero_add  :=
-      sorry
-  }
+{ add := graft,
+  add_assoc := by
+    intros a b c
+    rw [graft, graft, graft],
+  zero := Tree.empty, -- assuming `Tree.empty` represents an empty tree
+  add_zero := by
+    intro a
+    rw [graft, Tree.empty],
+  zero_add := by
+    intro a
+    rw [graft, Tree.empty]
+}
 
 /- 1.3 (**optional**). Explain why `Tree` with `graft` as addition cannot be
 declared an instance of `AddGroup`. -/

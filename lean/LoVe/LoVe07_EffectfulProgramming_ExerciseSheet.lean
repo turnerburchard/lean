@@ -52,7 +52,8 @@ instance Option.LawfulMonadWithOrelse :
     emp          := Option.none
     orelse       := Option.orelse
     emp_orelse   :=
-      sorry
+      by
+        simp [Option.orelse]
     orelse_emp   :=
       by
         intro α ma
@@ -61,14 +62,19 @@ instance Option.LawfulMonadWithOrelse :
         { rfl }
         { rfl }
     orelse_assoc :=
-      sorry
+      by
+        intro α β χ
+        simp [Option.bind_assoc]
+        simp [Option.orelse]
     emp_bind     :=
       by
         intro α β f
         simp [Bind.bind]
         rfl
     bind_emp     :=
-      sorry
+      by
+        simp [Bind.bind]
+        
   }
 
 @[simp] theorem Option.some_bind {α β : Type} (a : α) (g : α → Option β) :

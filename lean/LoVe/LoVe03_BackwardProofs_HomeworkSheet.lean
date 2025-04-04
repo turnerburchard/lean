@@ -29,15 +29,26 @@ Section 3.3 in the Hitchhiker's Guide. -/
 
 theorem B (a b c : Prop) :
   (a → b) → (c → a) → c → b :=
-  sorry
+    by
+      intro fab fca hc
+      apply fab
+      apply fca
+      exact hc
 
 theorem S (a b c : Prop) :
   (a → b → c) → (a → b) → a → c :=
-  sorry
+  by
+    intro fabc fab ha
+    apply fabc ha (fab ha)
 
 theorem more_nonsense (a b c d : Prop) :
   ((a → b) → c → d) → c → b → d :=
-  sorry
+  by
+    intro fabcd hc hb
+    apply fabcd
+    exact fun _ => hb
+
+
 
 theorem even_more_nonsense (a b c : Prop) :
   (a → b) → (a → c) → a → b → c :=
@@ -47,7 +58,14 @@ theorem even_more_nonsense (a b c : Prop) :
 
 theorem weak_peirce (a b : Prop) :
   ((((a → b) → a) → a) → b) → b :=
-  sorry
+  by
+    intro habaab
+    apply habaab
+    intro haba
+    apply haba
+    intro ha
+    apply habaab
+    exact fun _ => ha
 
 
 /- ## Question 2 (5 points): Logical Connectives
